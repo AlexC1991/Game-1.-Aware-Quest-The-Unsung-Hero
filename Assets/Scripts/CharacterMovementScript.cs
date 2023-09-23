@@ -18,8 +18,8 @@ namespace AlexzanderCowell
         private Camera _playerCamera;
         private CharacterController _controller;
         private bool _runFaster;
-        private float _mouseSensitivityY;
-        private float _mouseSensitivityX;
+        [HideInInspector] public static float _mouseSensitivityY;
+        [HideInInspector] public static float _mouseSensitivityX;
         private float _normalWalkSpeed;
         private float _mouseXposition,
             _moveHorizontal,
