@@ -101,6 +101,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 382787bf30dc76840afc3ea7f9b96d90, type: 2}
+    - target: {fileID: -5754084199372789682, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -6859134200549966656, guid: 8f0ac78fe3554fe4991590b23fc5bdf8, type: 3}
     - target: {fileID: 919132149155446097, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
       propertyPath: m_Name
       value: stones (1)
@@ -209,6 +213,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 382787bf30dc76840afc3ea7f9b96d90, type: 2}
+    - target: {fileID: -5754084199372789682, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -6859134200549966656, guid: 8f0ac78fe3554fe4991590b23fc5bdf8, type: 3}
     - target: {fileID: 919132149155446097, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
       propertyPath: m_Name
       value: stones (4)
@@ -317,6 +325,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 382787bf30dc76840afc3ea7f9b96d90, type: 2}
+    - target: {fileID: -5754084199372789682, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -6859134200549966656, guid: 8f0ac78fe3554fe4991590b23fc5bdf8, type: 3}
     - target: {fileID: 919132149155446097, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
       propertyPath: m_Name
       value: stones
@@ -425,6 +437,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 382787bf30dc76840afc3ea7f9b96d90, type: 2}
+    - target: {fileID: -5754084199372789682, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -6859134200549966656, guid: 8f0ac78fe3554fe4991590b23fc5bdf8, type: 3}
     - target: {fileID: 919132149155446097, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
       propertyPath: m_Name
       value: stones (2)
@@ -533,6 +549,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 382787bf30dc76840afc3ea7f9b96d90, type: 2}
+    - target: {fileID: -5754084199372789682, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5028493336078921005, guid: 848f4364a4b704a40b790511d342c594, type: 3}
     - target: {fileID: 919132149155446097, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
       propertyPath: m_Name
       value: stones (3)
@@ -641,6 +661,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 382787bf30dc76840afc3ea7f9b96d90, type: 2}
+    - target: {fileID: -5754084199372789682, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -6859134200549966656, guid: 8f0ac78fe3554fe4991590b23fc5bdf8, type: 3}
     - target: {fileID: 919132149155446097, guid: aa6ca9ddaf18c724ea5bab70a9d23c7b, type: 3}
       propertyPath: m_Name
       value: stones (5)
