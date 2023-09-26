@@ -66,7 +66,7 @@ namespace AlexzanderCowell
         {
             JumpMovement();
             RunningMovement();
-            Debug.Log(_controller.isGrounded);
+            
             /*if (_timeElapsed < _duration)
             {
                 float t = _timeElapsed / _duration;
@@ -86,11 +86,18 @@ namespace AlexzanderCowell
             
             if (_moveHorizontal > 0 || _moveVertical > 0 || _moveHorizontal < 0)
             {
-                _playersAnimation.SetBool("IsWalking", true);
+                if (walkSpeed == _normalWalkSpeed)
+                {
+                    _playersAnimation.SetFloat("Blend", 0.3f, 0.2f, Time.deltaTime);
+                }
+                else if (walkSpeed == _running)
+                {
+                    _playersAnimation.SetFloat("Blend", 0.9f, 0.2f, Time.deltaTime);
+                }
             }
             else
             {
-                _playersAnimation.SetBool("IsWalking", false);
+                _playersAnimation.SetFloat("Blend", 0, 0.2f, Time.deltaTime);
             }
 
             if (_moveVertical < 0)
@@ -145,9 +152,16 @@ namespace AlexzanderCowell
         
         private void JumpMovement() 
         {
+            if (_moveDirection.y > 0)
+            {
+                _playersAnimation.SetBool("IsJumping", true);
+            }
+            else
+            {
+                _playersAnimation.SetBool("IsJumping", false);
+            }
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                Debug.Log("Hitting Space Bar");
                 _playerIsJumping = true;
             }
 
@@ -157,6 +171,7 @@ namespace AlexzanderCowell
                 _moveDirection.y -= gravitySlider * Time.deltaTime;
                 _playerIsJumping = false;
             }
+            
         }
 
         private void RunningMovement()
