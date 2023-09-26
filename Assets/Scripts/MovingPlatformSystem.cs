@@ -1,18 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-
-public class MovingPlatformSystem : MonoBehaviour
+namespace AlexzanderCowell
 {
-    // Start is called before the first frame update
-    void Start()
+    public class MovingPlatformSystem : MonoBehaviour
     {
-        
-    }
+        [TagSelector]
+        [SerializeField] private string thisTag;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private GameObject _playerGameObject;
+
+
+        private void Awake()
+        {
+            _playerGameObject = GameObject.FindGameObjectWithTag(thisTag);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag(thisTag))
+            {
+                _playerGameObject.transform.parent = transform;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag(thisTag))
+            {
+                _playerGameObject.transform.parent = null;
+            }
+        }
     }
 }
+

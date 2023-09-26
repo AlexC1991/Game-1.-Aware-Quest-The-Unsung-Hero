@@ -13,6 +13,8 @@ namespace AlexzanderCowell
         [Range(0,30)]
         private float walkSpeed = 6;
         [SerializeField] private float downValue, upValue;
+        /*[SerializeField] private LayerMask collisionLayer;*/
+        [SerializeField] private float jumpHeight;
         
         [Header("Internal Edits")]
         private Camera _playerCamera;
@@ -31,6 +33,9 @@ namespace AlexzanderCowell
         private float _duration = 3;
         private float idleTimer = 2;
         private float idleResetTimer;
+        private bool _playerIsJumping;
+        private float _running;
+        private bool _isRunning;
 
         private void Awake()
         {
@@ -41,11 +46,12 @@ namespace AlexzanderCowell
 
         private void Start()
         {
+            _running = walkSpeed * 2;
             Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
             Cursor.visible = false;
             _mouseSensitivityY = 0.7f;
             _mouseSensitivityX = 1;
-            /*_normalWalkSpeed = walkSpeed;*/
+            _normalWalkSpeed = walkSpeed;
             _runFaster = false;
             idleResetTimer = idleTimer;
         }
@@ -58,6 +64,9 @@ namespace AlexzanderCowell
 
         private void Update()
         {
+            JumpMovement();
+            RunningMovement();
+            Debug.Log(_controller.isGrounded);
             /*if (_timeElapsed < _duration)
             {
                 float t = _timeElapsed / _duration;
@@ -69,7 +78,7 @@ namespace AlexzanderCowell
                 walkSpeed = 5;
             }*/
             
-            Debug.Log("Idle Timer " + idleTimer);
+            /*Debug.Log("Idle Timer " + idleTimer);*/
             
             
             /*Debug.Log("Horizontal " + _moveHorizontal);
@@ -125,12 +134,51 @@ namespace AlexzanderCowell
             movement = transform.TransformDirection(movement) * walkSpeed; // Gives the character movement speed.
             _controller.Move((movement + _moveDirection) * Time.deltaTime); // Gets all the movement variables and moves the character.
         }
+        
 
         private void CharacterGravity()
         {
-            _moveDirection.y += gravitySlider * Time.deltaTime;
+            _moveDirection.y -= gravitySlider * Time.deltaTime;
             // Move the character controller with gravity
             _controller.Move(_moveDirection * Time.deltaTime);
+        }
+        
+        private void JumpMovement() 
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                Debug.Log("Hitting Space Bar");
+                _playerIsJumping = true;
+            }
+
+            if (_playerIsJumping && (_controller.isGrounded)) // If player hits the space bar and the character is touching the ground it will allow the character to jump.)
+            {
+                _moveDirection.y = Mathf.Sqrt(5f * jumpHeight * gravitySlider);
+                _moveDirection.y -= gravitySlider * Time.deltaTime;
+                _playerIsJumping = false;
+            }
+        }
+
+        private void RunningMovement()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+            {
+                _isRunning = true;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+            {
+                _isRunning = false;
+            }
+
+            if (_isRunning)
+            {
+                walkSpeed = _running;
+            }
+            else
+            {
+                walkSpeed = _normalWalkSpeed;
+            }
+            
         }
 
         

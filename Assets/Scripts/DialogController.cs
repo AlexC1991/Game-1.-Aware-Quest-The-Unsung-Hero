@@ -54,7 +54,7 @@ namespace AlexzanderCowell
 
         private void Update()
         {
-            Debug.Log(_bubblesAreGone);
+            /*Debug.Log(_bubblesAreGone);*/
             
             if (!_bubblesAreGone)
             {
@@ -244,7 +244,7 @@ namespace AlexzanderCowell
             {
                 One.GetComponent<CanvasGroup>().alpha -= Mathf.Lerp(1, 0,  0.1f) * Time.deltaTime;
                 
-                Debug.Log(One.GetComponent<CanvasGroup>().alpha);
+                /*Debug.Log(One.GetComponent<CanvasGroup>().alpha);*/
 
                 if (One.GetComponent<CanvasGroup>().alpha == 0)
                 {
