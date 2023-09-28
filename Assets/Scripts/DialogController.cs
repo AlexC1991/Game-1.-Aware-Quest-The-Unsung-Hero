@@ -31,7 +31,7 @@ namespace AlexzanderCowell
         private bool _startStory;
         private bool _bubblesAreUp;
         private bool _bubblesAreGone;
-
+        [Header("Character Dialog")]
         [SerializeField] private string[] dialogTextOldManOne;
         [SerializeField] private string[] dialogTextOldManTwo;
         [SerializeField] private string[] ninjaTextOne;
@@ -39,7 +39,7 @@ namespace AlexzanderCowell
         [SerializeField] private string[] randomHelpFulHints;
         [SerializeField] private string[] randomNinjaMasterText;
         [SerializeField] private string[] ninjaMasterText;
-
+        public static bool currentlyTalking;
 
 
         private void Start()
@@ -54,9 +54,8 @@ namespace AlexzanderCowell
 
         private void Update()
         {
-            /*Debug.Log(_bubblesAreGone);*/
             
-            if (!_bubblesAreGone)
+            if (!_bubblesAreGone || !_startStory)
             {
                 SpeechBubbleControlOneMinus();
             }
@@ -85,7 +84,12 @@ namespace AlexzanderCowell
                 if (_bubblesAreUp)
                 {
                     FirstOldManInteractionTree();
+                    currentlyTalking = true;
                 }
+            }
+            else
+            {
+                currentlyTalking = false;
             }
 
             if (OldManScript.characterIsHere && _eButtonPress == 0)
@@ -146,6 +150,17 @@ namespace AlexzanderCowell
                             FontChangeSize();
                             OldManDialogControl();
                             _currentTextCounter = 0;
+                        }
+                        else if (_currentLineIndex % 2 == 0 && _currentLineIndex > 23)
+                        {
+                            FontChangeSize();
+                            PlayersDialogControl();
+                            _currentTextCounter = 0;
+                        }
+
+                        if (_currentLineIndex > 32)
+                        {
+                            _startStory = false;
                         }
                     }
                 }
@@ -244,7 +259,7 @@ namespace AlexzanderCowell
             {
                 One.GetComponent<CanvasGroup>().alpha -= Mathf.Lerp(1, 0,  0.1f) * Time.deltaTime;
                 
-                /*Debug.Log(One.GetComponent<CanvasGroup>().alpha);*/
+                
 
                 if (One.GetComponent<CanvasGroup>().alpha == 0)
                 {

@@ -9,9 +9,11 @@ namespace AlexzanderCowell
         private int _escCounter;
         private bool _escCountBool;
         [SerializeField] private GameObject inGameMenu;
+        [SerializeField] private GameObject inGameMenuControlsScreen;
         private void Start()
         {
             inGameMenu.SetActive(false);
+            inGameMenuControlsScreen.SetActive(false);
         }
 
         private void Update()
@@ -39,7 +41,7 @@ namespace AlexzanderCowell
                 Cursor.visible = true;
                 Time.timeScale = 0;
             }
-            else
+            else if (_escCounter == 2 || _escCounter == 0 )
             {
                 inGameMenu.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
@@ -47,7 +49,7 @@ namespace AlexzanderCowell
                 Time.timeScale = 1;
             }
 
-            if (_escCounter > 1)
+            if (_escCounter == 2)
             {
                 _escCounter = 0;
             }
@@ -74,6 +76,30 @@ namespace AlexzanderCowell
         public void ReturnToGameButtonOption()
         {
             _escCountBool = true;
+        }
+
+        public void ControlsDisplayed()
+        {
+            _escCounter = 3;
+
+            if (_escCounter == 3)
+            {
+                inGameMenuControlsScreen.SetActive(true);
+                Cursor.lockState = CursorLockMode.Confined; // Lock the cursor to the center of the screen
+                Cursor.visible = true;
+                Time.timeScale = 0;
+            }
+            
+        }
+
+        public void GoBackToInGameMenu()
+        {
+            _escCounter = 1;
+            
+            inGameMenuControlsScreen.SetActive(false);
+            Cursor.lockState = CursorLockMode.Confined; // Lock the cursor to the center of the screen
+            Cursor.visible = true;
+            Time.timeScale = 0;
         }
     }
 }

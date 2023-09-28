@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace AlexzanderCowell
 {
@@ -15,10 +16,13 @@ namespace AlexzanderCowell
         [SerializeField] private float downValue, upValue;
         /*[SerializeField] private LayerMask collisionLayer;*/
         [SerializeField] private float jumpHeight;
+        [SerializeField] private GameObject[] weaponAndShield;
+        [TagSelector]
+        [SerializeField] private string thisTag;
         
         [Header("Internal Edits")]
         private Camera _playerCamera;
-        private CharacterController _controller;
+        public static CharacterController _controller;
         private bool _runFaster;
         [HideInInspector] public static float _mouseSensitivityY;
         [HideInInspector] public static float _mouseSensitivityX;
@@ -32,10 +36,18 @@ namespace AlexzanderCowell
         private float _timeElapsed = 0;
         private float _duration = 3;
         private float idleTimer = 2;
-        private float idleResetTimer;
+        private float _idleResetTimer;
         private bool _playerIsJumping;
         private float _running;
         private bool _isRunning;
+        private bool _weaponKey;
+        private int _weaponButtonCounter;
+        private float _randomAttack;
+        private bool checkAttackNumber;
+        private float storedAttackNumber;
+        public static bool _playerIsBlocking;
+        public static bool _playerIsAttacking;
+        private bool _playerIsInAttackRange;
 
         private void Awake()
         {
@@ -53,7 +65,15 @@ namespace AlexzanderCowell
             _mouseSensitivityX = 1;
             _normalWalkSpeed = walkSpeed;
             _runFaster = false;
-            idleResetTimer = idleTimer;
+            _idleResetTimer = idleTimer;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag(thisTag))
+            {
+                _playerIsInAttackRange = true;
+            }
         }
 
         private void FixedUpdate()
@@ -64,66 +84,12 @@ namespace AlexzanderCowell
 
         private void Update()
         {
+            CombatAnimations();
+            TooLongIdleState();
+            WeaponDisplay();
+            PlayerMovementAnimations();
             JumpMovement();
             RunningMovement();
-            
-            /*if (_timeElapsed < _duration)
-            {
-                float t = _timeElapsed / _duration;
-                walkSpeed = Mathf.Lerp(0, 8, t);
-                _timeElapsed += Time.deltaTime;
-            }
-            else
-            {
-                walkSpeed = 5;
-            }*/
-            
-            /*Debug.Log("Idle Timer " + idleTimer);*/
-            
-            
-            /*Debug.Log("Horizontal " + _moveHorizontal);
-            Debug.Log("Vertical " + _moveVertical);*/
-            
-            if (_moveHorizontal > 0 || _moveVertical > 0 || _moveHorizontal < 0)
-            {
-                if (walkSpeed == _normalWalkSpeed)
-                {
-                    _playersAnimation.SetFloat("Blend", 0.3f, 0.2f, Time.deltaTime);
-                }
-                else if (walkSpeed == _running)
-                {
-                    _playersAnimation.SetFloat("Blend", 0.9f, 0.2f, Time.deltaTime);
-                }
-            }
-            else
-            {
-                _playersAnimation.SetFloat("Blend", 0, 0.2f, Time.deltaTime);
-            }
-
-            if (_moveVertical < 0)
-            {
-                _playersAnimation.SetBool("IsWalkingBackwards", true);
-            }
-            else
-            {
-                _playersAnimation.SetBool("IsWalkingBackwards", false);
-            }
-
-            if (_moveHorizontal > 0 || _moveVertical > 0)
-            {
-                idleTimer -= 0.5f * Time.deltaTime;
-            }
-            
-            if (idleTimer < 0.2f && _moveHorizontal > 0)
-            {
-                idleTimer = 0;
-                _playersAnimation.SetBool("SleepAnimation", true);
-            }
-            else
-            {
-                _playersAnimation.SetBool("SleepAnimation", false);
-                idleTimer = idleResetTimer;
-            }
         }
 
         private void CharacterMovementBase()
@@ -132,8 +98,12 @@ namespace AlexzanderCowell
             _mouseXposition += Input.GetAxis("Mouse X") * _mouseSensitivityX;
             _mouseYposition -= Input.GetAxis("Mouse Y") * _mouseSensitivityY;
             _mouseYposition = Mathf.Clamp(_mouseYposition, downValue, upValue);
-            _moveHorizontal = Input.GetAxis("Horizontal"); // Gets the horizontal movement of the character.
-            _moveVertical = Input.GetAxis("Vertical"); // Gets the vertical movement of the character.
+
+            if (!DialogController.currentlyTalking)
+            {
+                _moveHorizontal = Input.GetAxis("Horizontal"); // Gets the horizontal movement of the character.
+                _moveVertical = Input.GetAxis("Vertical"); // Gets the vertical movement of the character.
+            }
             
             transform.rotation = Quaternion.Euler(_mouseYposition, _mouseXposition, 0f);
             _playerCamera.transform.rotation = Quaternion.Euler(_mouseYposition, _mouseXposition, 0f);
@@ -196,6 +166,200 @@ namespace AlexzanderCowell
             
         }
 
+        private void PlayerMovementAnimations()
+        {
+            if (_moveHorizontal > 0 || _moveVertical > 0 || _moveHorizontal < 0)
+            {
+                if (walkSpeed == _normalWalkSpeed)
+                {
+                    _playersAnimation.SetFloat("Blend", 0.3f, 0.2f, Time.deltaTime);
+                }
+                else if (walkSpeed == _running)
+                {
+                    _playersAnimation.SetFloat("Blend", 0.9f, 0.2f, Time.deltaTime);
+                }
+            }
+            else
+            {
+                _playersAnimation.SetFloat("Blend", 0, 0.2f, Time.deltaTime);
+            }
+
+            if (_moveVertical < 0)
+            {
+                _playersAnimation.SetBool("IsWalkingBackwards", true);
+            }
+            else
+            {
+                _playersAnimation.SetBool("IsWalkingBackwards", false);
+            }
+
+            if (_moveHorizontal > 0 || _moveVertical > 0)
+            {
+                idleTimer -= 0.5f * Time.deltaTime;
+            }
+            
+            if (idleTimer < 0.2f && _moveHorizontal > 0)
+            {
+                idleTimer = 0;
+                _playersAnimation.SetBool("SleepAnimation", true);
+            }
+            else
+            {
+                _playersAnimation.SetBool("SleepAnimation", false);
+                idleTimer = _idleResetTimer;
+            }
+        }
+
+        private void WeaponDisplay()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                _weaponKey = true;
+            }
+            if (_weaponKey)
+            {
+                _weaponButtonCounter += 1;
+                _weaponKey = false;
+            }
+            
+
+            if (_weaponButtonCounter == 1)
+            {
+                weaponAndShield[0].SetActive(true);
+                weaponAndShield[1].SetActive(true);
+            }
+            else
+            {
+                weaponAndShield[0].SetActive(false);
+                weaponAndShield[1].SetActive(false);
+            }
+            if (_weaponButtonCounter == 2)
+            {
+                _weaponButtonCounter = 0;
+            }
+        }
+
+        private void TooLongIdleState()
+        {
+            /*if (_timeElapsed < _duration)
+            {
+                float t = _timeElapsed / _duration;
+                walkSpeed = Mathf.Lerp(0, 8, t);
+                _timeElapsed += Time.deltaTime;
+            }
+            else
+            {
+                walkSpeed = 5;
+            }*/
+            
+            /*Debug.Log("Idle Timer " + idleTimer);*/
+            
+            
+            /*Debug.Log("Horizontal " + _moveHorizontal);
+            Debug.Log("Vertical " + _moveVertical);*/
+        }
+
+        private void CombatAnimations()
+        {
+            _randomAttack = Random.Range(0, 3);
+            
+            // gets the current animation time and stores it in a variable
+            float currentBaseState = _playersAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            
+            // uses the currentBaseState and checks if the animation is still playing or not.
+           
+            if (Input.GetKey(KeyCode.Mouse0) && currentBaseState > 0.5f)
+            {
+                checkAttackNumber = true;
+                
+                if (_playerIsInAttackRange)
+                {
+                    _playerIsAttacking = true;
+                }
+                else
+                {
+                    _playerIsAttacking = false;
+                }
+            }
+            else if (currentBaseState < 0.5f)
+            {
+                storedAttackNumber = 4;
+                _playersAnimation.SetInteger("Attack", 0);
+                
+            }
+            
+            if (checkAttackNumber)
+            {
+                storedAttackNumber = _randomAttack;
+                checkAttackNumber = false;
+            }
+
+            if (_weaponButtonCounter == 1)
+            {
+                if (storedAttackNumber == 0)
+                {
+                    _playersAnimation.SetInteger("Attack", 1);
+                }
+                else if (storedAttackNumber == 1)
+                {
+                    _playersAnimation.SetInteger("Attack", 2);
+                    
+                }
+                else if (storedAttackNumber == 2)
+                {
+                    _playersAnimation.SetInteger("Attack", 3);
+                   
+                }
+                else if (storedAttackNumber == 3)
+                {
+                    _playersAnimation.SetInteger("Attack", 1);
+                   
+                }
+                
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    _playersAnimation.SetBool("ShieldBlock", true);
+                    _playerIsBlocking = true;
+                }
+                else if (Input.GetKeyUp(KeyCode.Mouse1))
+                {
+                    _playersAnimation.SetBool("ShieldBlock", false);
+                    _playerIsBlocking = false;
+                }
+            }
+            
+            if (_weaponButtonCounter == 0)
+            {
+                if (storedAttackNumber == 0)
+                {
+                    _playersAnimation.SetInteger("Attack", 4);
+                }
+                else if (storedAttackNumber == 1)
+                {
+                    _playersAnimation.SetInteger("Attack", 5);
+                   
+                }
+                else if (storedAttackNumber == 2)
+                {
+                    _playersAnimation.SetInteger("Attack", 5);
+                }
+                else if (storedAttackNumber == 3)
+                {
+                    _playersAnimation.SetInteger("Attack", 4);
+                }
+            }
+            
+            
+        }
         
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag(thisTag))
+            {
+                _playerIsInAttackRange = false;
+            }
+        }
+
+
     }
 }

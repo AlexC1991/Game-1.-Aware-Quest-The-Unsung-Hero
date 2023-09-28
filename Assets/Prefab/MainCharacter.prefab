@@ -209,6 +209,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -2922051811116512275, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 270157423702485028, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -219,7 +223,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1728280593283003582, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2856234247975315476, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
       propertyPath: m_IsActive
@@ -229,6 +233,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d39607a605cf6b44ea621b728070f046, type: 2}
+    - target: {fileID: 3862085102932151524, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3899312069614297733, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -377,6 +385,10 @@ MonoBehaviour:
   gravitySlider: -38
   downValue: -5
   upValue: 20
+  jumpHeight: 0
+  weaponAndShield:
+  - {fileID: 8664395739249497748}
+  - {fileID: 7453190292983895851}
 --- !u!95 &6734632554206807340
 Animator:
   serializedVersion: 5
@@ -452,6 +464,11 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1 &7453190292983895851 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2922051811116512275, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
+  m_PrefabInstance: {fileID: 3467143106890882246}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7967455660920067245 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -2409475291962668949, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
@@ -506,3 +523,8 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1 &8664395739249497748 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -4025133613917730222, guid: 55d0e268fb5437346a47ad6036a91906, type: 3}
+  m_PrefabInstance: {fileID: 3467143106890882246}
+  m_PrefabAsset: {fileID: 0}

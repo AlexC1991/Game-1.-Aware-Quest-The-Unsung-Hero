@@ -25,24 +25,16 @@ public class LavaLevelScript : MonoBehaviour
 
     private void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.E) && _seePlayer)
         {
-            Debug.Log("Detecting Character");
-            _activated = true;
             _openRocks = true;
+            _activated = true;
         }
-
-        if (Input.GetKeyUp(KeyCode.E))
-        {
-            _activated = false;
-        }
-        
-        Debug.Log(_openRocks);
-        
-        
         if (_activated)
         {
             _animator.SetBool("ActivateLever", true);
+            _activated = false;
         }
         else
         {

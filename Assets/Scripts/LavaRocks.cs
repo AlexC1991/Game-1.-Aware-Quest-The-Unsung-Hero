@@ -1,31 +1,29 @@
 using System;
 using UnityEngine;
 
-public class LavaRocks : MonoBehaviour
+namespace AlexzanderCowell
 {
-    private Animator _thisAnimator;
 
-
-    private void Start()
+    public class LavaRocks : MonoBehaviour
     {
-        _thisAnimator = GetComponent<Animator>();
-    }
+        private Animator _thisAnimator;
 
-    private void Update()
-    {
-        if (LavaLevelScript._openRocks)
+
+        private void Start()
         {
-            _thisAnimator.SetBool("StonesAreUp", true);
-            LeverActivation();
+            _thisAnimator = GetComponent<Animator>();
         }
-        else
-        {
-            /*_thisAnimator.SetBool("StonesAreUp", false);*/
-        }
-    }
 
-    private void LeverActivation()
-    {
-        /*LavaLevelScript._openRocks = false;*/
+        private void Update()
+        {
+            if (LavaLevelScript._openRocks)
+            {
+                if (_thisAnimator.GetBool("StonesAreUp") != true)
+                {
+                    _thisAnimator.SetBool("StonesAreUp", true);
+                }
+            }
+        }
+
     }
 }
